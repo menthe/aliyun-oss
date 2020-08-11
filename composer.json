@@ -1,0 +1,28 @@
+{
+	"name" : "harris/aliyun-oss",
+	"description" : "Aliyun OSS SDK for Laravel",
+	"keywords" : [
+		"AliyunOSS",
+		"YuuGames",
+		"Harris",
+		"HarrisWang"
+	],
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "harris",
+			"email" : "i@harris.wang"
+		}
+	],
+	"require" : {
+		"illuminate/support" : "^7.0",
+		"aliyuncs/oss-sdk-php": "~2.0",
+		"nesbot/carbon" : "^2.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Harris\\AliyunOSS\\" : "src/"
+		}
+	},
+	"minimum-stability" : "dev",
+	"prefer-stable" : true
+}
