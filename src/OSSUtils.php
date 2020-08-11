@@ -15,7 +15,7 @@ class OSSUtils {
 			throw new \Exception('VPC模式下不允许外网上传或者下载');
 		}
 		
-		$ossClient = new OssClient(config('fileuploads.aliyun-oss.accessKeyId'), config('fileuploads.aliyun-oss.accessKeySecret'), config('fileuploads.aliyun-oss.staticEndPoint'));
+		$ossClient = new OssClient(config('fileuploads.aliyun-oss.accessKeyId'), config('fileuploads.aliyun-oss.accessKeySecret'), config('fileuploads.aliyun-oss.ossServer'));
 		$this->ossClient = $ossClient;
 		$this->bucket = config('fileuploads.aliyun-oss.ossBucket');
 	}
@@ -29,15 +29,12 @@ class OSSUtils {
 		$ossKey = Config::get('fileuploads.aliyun-oss.ossPrefix') . $path;
 		$oss = new OSSUtils();
 		
-		$handle = fopen($mpf, 'r');
-		
-		$result = $oss->ossClient->putObject(array_merge([
-			'Bucket' => $oss->bucket,
-			'Key' => $ossKey,
-			'Content' => $handle,
-			'ContentLength' => filesize($mpf),
-		]));
-		fclose($handle);
+		$result = $oss->ossClient->putObject(
+			$oss->bucket,
+			$ossKey,
+			$mpf->get(),
+			[]
+		);
 		
 		if($result) {
 			return $path;
@@ -57,15 +54,14 @@ class OSSUtils {
 		$ossKey = Config::get('fileuploads.aliyun-oss.ossPrefix') . $path;
 		$oss = new OSSUtils();
 		
-		$handle = fopen($oPath, 'r');
+		$content = file_get_contents($oPath);
 		
-		$result = $oss->ossClient->putObject(array_merge([
-			'Bucket' => $oss->bucket,
-			'Key' => $ossKey,
-			'Content' => $handle,
-			'ContentLength' => filesize($oPath),
-		]));
-		fclose($handle);
+		$result = $oss->ossClient->putObject(
+			$oss->bucket,
+			$ossKey,
+			$content,
+			[],
+		);
 		
 		if($result) {
 			return $path;
@@ -81,12 +77,12 @@ class OSSUtils {
 		$ossKey = Config::get('fileuploads.aliyun-oss.ossPrefix') . $path;
 		$oss = new OSSUtils();
 		
-		$result = $oss->ossClient->putObject(array_merge([
-			'Bucket' => $oss->bucket,
-			'Key' => $ossKey,
-			'Content' => $content,
-			'ContentLength' => strlen($content),
-		]));
+		$result = $oss->ossClient->putObject(
+			$oss->bucket,
+			$ossKey,
+			$content,
+			[],
+		);
 		
 		if($result) {
 			return $path;
