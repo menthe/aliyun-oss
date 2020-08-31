@@ -60,7 +60,7 @@ class OSSUtils {
 			$oss->bucket,
 			$ossKey,
 			$content,
-			[],
+			[]
 		);
 		
 		if($result) {
@@ -81,7 +81,7 @@ class OSSUtils {
 			$oss->bucket,
 			$ossKey,
 			$content,
-			[],
+			[]
 		);
 		
 		if($result) {
